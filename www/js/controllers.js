@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
   
-.controller('loginCtrl', function($scope, $state) {
+.controller('loginCtrl', function($scope, $state, $ionicPopup) {
     BaasBox.setEndPoint("http://localhost:9000");
     BaasBox.appcode = "1234567890";
     console.log("BaasBox initiated");
@@ -96,6 +96,36 @@ angular.module('app.controllers', [])
             .fail(function (error) {$scope.signUpData
                 console.log("error ", err.responseText );
             });
+    };
+
+    $scope.showSignUp = function() {
+        $scope.signUpData = {};
+
+        var customPopup = $ionicPopup.show({
+            title: 'Registrazione',
+            template: '<input type="text" ng-model="signUpData.username" placeholder="Username"> <input type="password" ng-model="signUpData.password" placeholder="Password"> <input type="text" ng-model="signUpData.email" placeholder="Email">',
+            subTitle: 'Immetti Username, Password e Email',
+            scope: $scope,
+            buttons: [{
+                text: 'Annulla'
+            }, {
+                text: 'Registrati!',
+                type: 'button-positive',
+                onTap: function(e) {
+                    if (!$scope.signUpData.username && !$scope.signUpData.password) {
+                        // Don't allow the user to close unless they enter a WiFi password.
+                        e.preventDefault();
+                    } else {
+                        return $scope.signUpData;
+                    }
+                }
+            }]
+        });
+
+        customPopup.then(function(res) {
+            console.log('Tapped!', res);
+            $scope.doSignUp();
+        });
     };
 })
    
