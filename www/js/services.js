@@ -20,7 +20,7 @@ angular.module('app.services', [])
                 });
         },
 
-        getUsers: ciao() {
+        getUsers: ci() {
             // $http returns a promise, which has a then function, which also returns a promise.
             return $http.get('http://jsonplaceholder.typicode.com/users')
                 .then(function(response) {
