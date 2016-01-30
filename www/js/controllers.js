@@ -127,6 +127,33 @@ angular.module('app.controllers', [])
             $scope.doSignUp();
         });
     };
+
+    $scope.createDocument = function() {
+        // Assumes a collection named "schede" has been created
+        var post = new Object();
+        post.title = "My new post";
+        post.body = {"d":4};
+        BaasBox.save(post, "schede")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    $scope.deleteCollection = function() {
+        console.log("chiamata deleteCollection");
+        BaasBox.deleteCollection("schede")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+        console.log("chiamata deleteCollection");
+    };
+
 })
    
 .controller('homeCtrl', function($scope) {
