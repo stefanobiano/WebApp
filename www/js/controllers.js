@@ -162,9 +162,42 @@ angular.module('app.controllers', [])
    
 .controller('profiloCtrl', function($scope) {
 
+    // Retrieve documents
+    $scope.retrieveDocuments = function() {
+        BaasBox.loadObject("posts", "090dd688-2e9a-4dee-9afa-aad72a1efa93")
+            .done(function(res) {
+                console.log("res ", res['data']);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+        };
+
+    // follow a user
+    $scope.followaUser = function() {
+        BaasBox.followUser("cesare")
+            .done(function(res) {
+                console.log("res ", res['data']);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // unfollow a user
+    $scope.unfollowaUser = function() {
+        BaasBox.unfollowUser("cesare")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
 })
    
-.controller('cercaCtrl', function($scope, HttpService) {
+.controller('cercaCtrl', function($scope) {
     /*HttpService.getPost()
         .then(function(response) {
             $scope.post = response;
@@ -174,6 +207,18 @@ angular.module('app.controllers', [])
         .then(function(response) {
             $scope.users = response;
         });*/
+
+    $scope.retrieveDocuments = function() {
+
+        // Version with pagination
+        BaasBox.loadCollectionWithParams("schede", {page: 0, recordsPerPage: BaasBox.pagelength})
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
 })
    
 .controller('cloudTabDefaultPageCtrl', function($scope) {
@@ -182,9 +227,117 @@ angular.module('app.controllers', [])
 
 .controller('profiloTrainerCtrl', function($scope) {
 
+    // change password
+    $scope.retrieveDocuments = function() {
+        BaasBox.changePassword("oldpass", "newpass")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // follow a user
+    $scope.followaUser = function() {
+        BaasBox.followUser("cesare")
+            .done(function(res) {
+                console.log("res ", res['data']);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // unfollow a user
+    $scope.unfollowaUser = function() {
+        BaasBox.unfollowUser("cesare")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
 })
 
 .controller('creaSchedeCtrl', function($scope) {
 
+    $scope.delCollection = function() {
+        console.log("chiamata deleteCollection");
+        BaasBox.deleteCollection("schede")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // Create a document
+    $scope.createDocument = function() {
+        // Assumes a collection named "schede" has been created
+        var post = new Object();
+        post.title = "My new post";
+        post.body = {"d":4};
+        BaasBox.save(post, "schede")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // fetch following
+    $scope.createDocument = function() {
+        BaasBox.fetchFollowing("cesare")
+            .done(function(res) {
+                console.log("res ", res['data']);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // Fetch followers
+    $scope.createDocument = function() {
+        BaasBox.fetchFollowers("cesare")
+            .done(function(res) {
+                console.log("res ", res['data']);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    };
+
+    // Upload a file
+    // Assumes 'uploadForm' is a form with an input tag of type 'file'
+    $scope.caricaFile = function() {
+
+        $("#uploadForm").submit(function(e) {
+            e.preventDefault();
+            var formObj = $(this);
+            var formData = new FormData(this);
+            BaasBox.uploadFile(formData)
+                .done(function(res) {
+                    console.log("res ", res);
+                })
+                .fail(function(error) {
+                    console.log("error ", error);
+                })
+
+            })
+    };
+
+    //Grant permissions on a Document
+    $scope.createDocument = function() {
+        BaasBox.grantAccessToUser("posts", "4cbfe03c-632b-4d3e-9a2b-0d4a0326d89e", BaasBox.READ_PERMISSION, "a")
+            .done(function(res) {
+                console.log("res ", res);
+            })
+            .fail(function(error) {
+                console.log("error ", error);
+            })
+    }
 })
-    
